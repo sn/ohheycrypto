@@ -15,7 +15,7 @@ jobs:
         fetch-depth: 0  # Fetch full history for changelog
     
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: "3.11"
     
@@ -51,12 +51,9 @@ jobs:
         echo "EOF" >> $GITHUB_OUTPUT
     
     - name: Create GitHub Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v2
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release v${{ steps.get_version.outputs.VERSION }}
+        name: Release v${{ steps.get_version.outputs.VERSION }}
         body: |
           # OhHeyCrypto v${{ steps.get_version.outputs.VERSION }}
           
@@ -84,13 +81,6 @@ jobs:
           ```
         draft: false
         prerelease: ${{ contains(steps.get_version.outputs.VERSION, 'alpha') || contains(steps.get_version.outputs.VERSION, 'beta') || contains(steps.get_version.outputs.VERSION, 'rc') }}
-    
-    - name: Upload Release Assets
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: dist/ohheycrypto-${{ steps.get_version.outputs.VERSION }}-py3-none-any.whl
-        asset_name: ohheycrypto-${{ steps.get_version.outputs.VERSION }}-py3-none-any.whl
-        asset_content_type: application/zip
+        files: |
+          dist/ohheycrypto-${{ steps.get_version.outputs.VERSION }}-py3-none-any.whl
+          dist/ohheycrypto-${{ steps.get_version.outputs.VERSION }}.tar.gz
