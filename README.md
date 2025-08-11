@@ -2,12 +2,6 @@
 
 This is a **crypto trading bot** that uses sophisticated technical analysis and risk management to automatically place buy and sell orders. It primarily deals with the cryptocurrency `BTC` and the fiat currency `USDT`, but you can set it to any other trading pair.
 
-
-```shell
-pip install ohheycrypto
-```
-
-
 ![Trading Bot Screenshot](static/screenshot.png)
 
 ## Features
@@ -34,11 +28,13 @@ pip install ohheycrypto
 
 ## Installation
 
-### Quick Start:
+### Install from PyPI (recommended):
 
 ```shell
 pip install ohheycrypto
 ```
+
+### Quick Start:
 
 ```shell
 # Create a configuration file
