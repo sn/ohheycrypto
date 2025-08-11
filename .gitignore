@@ -81,3 +81,9 @@ logs/
 # Temporary files
 *.tmp
 *.temp
+
+# editors
+plan.md
+.claude
+.cursor
+.pycharm

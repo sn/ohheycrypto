@@ -1,7 +1,5 @@
 # Ohheycrypto Bot
 
-## Description
-
 This is a **crypto trading bot** that uses sophisticated technical analysis and risk management to automatically place buy and sell orders. It primarily deals with the cryptocurrency `BTC` and the fiat currency `USDT`, but you can set it to any other trading pair.
 
 ![Trading Bot Screenshot](static/screenshot.png)
@@ -223,31 +221,10 @@ ohheycrypto run config.json --dry-run
 ### Raspberry Pi Hosting:
 Follow [this guide](docs/RaspberryPiSetup.md) for Raspberry Pi deployment.
 
-### Docker Deployment:
-```dockerfile
-FROM python:3.11-slim
-RUN pip install ohheycrypto
-COPY config.json /app/config.json
-WORKDIR /app
-CMD ["ohheycrypto", "run", "config.json"]
-```
-
-## Monitoring & Troubleshooting
-
-### Log Analysis:
-- **Enhanced Market Analysis**: Shows RSI, trend, volatility, and dynamic thresholds
-- **Order Execution**: Detailed order info with market conditions
-- **Circuit Breaker Status**: Warns when trading is paused due to failures
-
-### Common Issues:
-- **"Insufficient balance" errors**: Check minimum $10 order requirement
-- **"Order value too small"**: Increase position size or balance
-- **Circuit breaker active**: Wait for timeout or restart bot to reset
-
 ## Contributing
 
 Contributions are welcome! Areas for improvement:
-- Additional technical indicators (MACD, Bollinger Bands)
+- Additional technical indicators (MACD, Bollinger Bands, etc)
 - Multi-pair trading support
 - Backtesting framework
 - Web dashboard for monitoring
