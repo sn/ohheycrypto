@@ -67,8 +67,8 @@ class LoggingService:
         print(chalk.green_bright("╚══╩╝╚╩╝╚╩══╩═╗╔╩══╩╝╚═╗╔╣╔═╩═╩══╝"))
         print(chalk.green_bright("────────────╔═╝║─────╔═╝║║║"))
         print(chalk.green_bright("────────────╚══╝─────╚══╝╚╝"))
-        print("Trading Bot v0.1.0")
-        print("https://github.com/ohheycrypto/bot")
+        print("Trading Bot v0.2.0")
+        print("https://github.com/sn/ohheycrypto")
         print("\n")
 
         LoggingService.success("Bot started.")

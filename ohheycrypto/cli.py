@@ -226,7 +226,7 @@ Examples:
   ohheycrypto run config.json         # Run the trading bot
   ohheycrypto run config.json --dry   # Dry run (analysis only, no trades)
   
-For more information, visit: https://github.com/ohheycrypto/bot
+For more information, visit: https://github.com/sn/ohheycrypto
         """
     )
     

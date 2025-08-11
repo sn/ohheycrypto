@@ -151,7 +151,6 @@ class APIConfig(BaseModel):
 
 class Config(BaseModel):
     """Main configuration class."""
-    # New structure for JSON config files
     binance: Optional[BinanceConfig] = Field(default=None)
     trading: TradingConfig = Field(default_factory=TradingConfig)
     market_analysis: MarketAnalysisConfig = Field(default_factory=MarketAnalysisConfig)
@@ -163,7 +162,6 @@ class Config(BaseModel):
     
     def __init__(self, **data):
         super().__init__(**data)
-        # Map new structure to legacy API config
         if self.binance:
             self.api.binance_api_key = self.binance.api_key
             self.api.binance_api_secret = self.binance.api_secret
@@ -245,7 +243,6 @@ def get_config() -> Config:
     """Get the configuration singleton."""
     global _config
     if _config is None:
-        # Try loading from file first
         config_path = Path("config.json")
         if config_path.exists():
             _config = Config.load_from_file(config_path)

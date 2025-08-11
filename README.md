@@ -233,7 +233,7 @@ ohheycrypto run production_config.json
 
 ### Development/Source Installation:
 ```bash
-git clone https://github.com/ohheycrypto/bot
+git clone https://github.com/sn/ohheycrypto
 cd bot
 pip install -e .
 ohheycrypto init dev_config.json
