@@ -121,6 +121,8 @@ ohheycrypto run config.json --verbose
 ### Legacy Environment Variables (still supported):
 
 Environment variables will override configuration file values:
+
+```
 - `BINANCE_API_KEY`: Your Binance API key  
 - `BINANCE_API_SECRET`: Your Binance API secret
 - `DISCORD_WEBHOOK`: Discord webhook URL for notifications
@@ -129,14 +131,18 @@ Environment variables will override configuration file values:
 - `BOT_BT`: Buy threshold percentage (as decimal, e.g., 0.002 = 0.2%)
 - `BOT_FIAT`: Fiat currency (default: USDT)
 - `BOT_CRYPTO`: Cryptocurrency (default: BTC)
+```
 
 ### How the Enhanced Trading Works:
 
 #### 1. Market Analysis Phase:
+
+```
 - **RSI Calculation**: Analyzes 14-day RSI to identify market momentum
 - **Volatility Assessment**: Calculates price volatility over 30 days
 - **Trend Detection**: Uses 10-day and 20-day moving averages to determine trend
 - **Dynamic Threshold Adjustment**: Scales thresholds 1x-3x based on volatility
+```
 
 #### 2. Buy Decision Logic:
 - **RSI Oversold (< 30)**: Strong buy signal regardless of other conditions
@@ -231,7 +237,7 @@ Contributions are welcome! Areas for improvement:
 
 Please submit pull requests or open issues for discussion.
 
-## ⚠️ Important Disclaimers
+## Important Disclaimers
 
 ### Risk Warning:
 - **Cryptocurrency trading is extremely risky** and can result in significant losses
