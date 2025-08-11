@@ -1,9 +1,10 @@
-import time
 import functools
-from typing import Callable, Any, Optional, Tuple, Type
 import logging
+import time
+from typing import Any, Callable, Optional, Tuple, Type
+
 from binance.exceptions import BinanceAPIException
-from requests.exceptions import RequestException, ConnectionError, Timeout
+from requests.exceptions import ConnectionError, RequestException, Timeout
 
 logger = logging.getLogger(__name__)
 

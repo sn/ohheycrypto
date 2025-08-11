@@ -3,7 +3,6 @@ import time
 
 import requests
 from binance.exceptions import BinanceAPIException
-
 from services.logging import LoggingService
 from services.market import Market
 from services.wallet import Wallet

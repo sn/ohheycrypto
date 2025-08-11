@@ -1,12 +1,11 @@
 import os
 from datetime import date, timedelta
 from typing import List, Optional
-import numpy as np
 
+import numpy as np
 from binance import Client
 
 from ohheycrypto.models.order import Order
-
 from ohheycrypto.plugins.discord import DiscordService
 
 

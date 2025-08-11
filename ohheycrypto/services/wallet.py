@@ -1,11 +1,11 @@
-import os
 import logging
+import os
 from typing import Dict, Optional
 
 from binance import Client
 from binance.exceptions import BinanceAPIException
 
-from ohheycrypto.utils.retry import retry_with_backoff, RetryConfig
+from ohheycrypto.utils.retry import RetryConfig, retry_with_backoff
 
 logger = logging.getLogger(__name__)
 

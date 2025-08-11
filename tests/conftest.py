@@ -1,7 +1,8 @@
-import pytest
-from unittest.mock import Mock, MagicMock, patch
-from pathlib import Path
 import sys
+from pathlib import Path
+from unittest.mock import MagicMock, Mock, patch
+
+import pytest
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -89,11 +90,11 @@ def mock_discord_service():
 def mock_config():
     """Mock configuration for testing."""
     from ohheycrypto.config.settings import (
-        Config,
-        TradingConfig,
-        MarketAnalysisConfig,
-        ExecutionConfig,
         APIConfig,
+        Config,
+        ExecutionConfig,
+        MarketAnalysisConfig,
+        TradingConfig,
     )
 
     return Config(

@@ -1,10 +1,10 @@
-import signal
 import logging
+import signal
 import threading
 import time
-from typing import Callable, List, Optional
 from contextlib import contextmanager
 from datetime import datetime
+from typing import Callable, List, Optional
 
 logger = logging.getLogger(__name__)
 

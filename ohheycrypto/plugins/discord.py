@@ -1,10 +1,11 @@
-import os
 import logging
-from typing import Optional, Dict, Any
-import requests
-from requests.exceptions import RequestException, Timeout, ConnectionError
+import os
+from typing import Any, Dict, Optional
 
-from ohheycrypto.utils.retry import retry_with_backoff, RetryConfig
+import requests
+from requests.exceptions import ConnectionError, RequestException, Timeout
+
+from ohheycrypto.utils.retry import RetryConfig, retry_with_backoff
 
 logger = logging.getLogger(__name__)
 

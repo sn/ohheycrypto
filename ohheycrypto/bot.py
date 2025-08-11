@@ -1,18 +1,18 @@
 """Main bot logic for OhHeyCrypto trading bot."""
 
+import logging
 import os
 import time
-import logging
-from typing import Optional, Dict, Any
 from pathlib import Path
+from typing import Any, Dict, Optional
 
 import requests
 from binance.exceptions import BinanceAPIException
 
+from ohheycrypto.config.settings import Config, get_config
 from ohheycrypto.services.logging import LoggingService
 from ohheycrypto.services.market import Market
 from ohheycrypto.services.wallet import Wallet
-from ohheycrypto.config.settings import Config, get_config
 
 logger = logging.getLogger(__name__)
 

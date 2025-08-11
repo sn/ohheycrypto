@@ -1,15 +1,16 @@
-import pytest
 import json
 from pathlib import Path
-from unittest.mock import patch, mock_open
+from unittest.mock import mock_open, patch
+
+import pytest
 from pydantic import ValidationError
 
 from ohheycrypto.config.settings import (
-    Config,
-    TradingConfig,
-    MarketAnalysisConfig,
-    ExecutionConfig,
     APIConfig,
+    Config,
+    ExecutionConfig,
+    MarketAnalysisConfig,
+    TradingConfig,
     get_config,
     reload_config,
 )

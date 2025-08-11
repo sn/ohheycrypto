@@ -1,5 +1,6 @@
+from unittest.mock import MagicMock, Mock, patch
+
 import pytest
-from unittest.mock import Mock, patch, MagicMock
 from binance.exceptions import BinanceAPIException
 
 from ohheycrypto.services.wallet import Wallet
