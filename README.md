@@ -51,7 +51,7 @@ ohheycrypto run config.json
 
 ### Configuration File:
 
-The bot now uses a JSON configuration file instead of environment variables. Use `ohheycrypto init` to create a template:
+The bot uses a JSON configuration file instead of environment variables. Use `ohheycrypto init` to create a template:
 
 ```json
 {
@@ -138,73 +138,98 @@ Environment variables will override configuration file values:
 #### 1. Market Analysis Phase:
 
 ```
-- **RSI Calculation**: Analyzes 14-day RSI to identify market momentum
-- **Volatility Assessment**: Calculates price volatility over 30 days
-- **Trend Detection**: Uses 10-day and 20-day moving averages to determine trend
-- **Dynamic Threshold Adjustment**: Scales thresholds 1x-3x based on volatility
+- RSI Calculation: Analyzes 14-day RSI to identify market momentum
+- Volatility Assessment: Calculates price volatility over 30 days
+- Trend Detection: Uses 10-day and 20-day moving averages to determine trend
+- Dynamic Threshold Adjustment: Scales thresholds 1x-3x based on volatility
 ```
 
 #### 2. Buy Decision Logic:
-- **RSI Oversold (< 30)**: Strong buy signal regardless of other conditions
-- **RSI Overbought (> 70)**: Prevents buying during peaks
-- **Trend-Based Adjustments**:
-  - **Uptrend**: More aggressive on small dips (0.7x threshold)
-  - **Downtrend**: Wait for stronger dips (1.5x threshold)
-  - **Sideways**: Use standard threshold
+
+```
+- RSI Oversold (< 30): Strong buy signal regardless of other conditions
+- RSI Overbought (> 70): Prevents buying during peaks
+- Trend-Based Adjustments:
+  - Uptrend: More aggressive on small dips (0.7x threshold)
+  - Downtrend: Wait for stronger dips (1.5x threshold)
+  - Sideways: Use standard threshold
+```
 
 #### 3. Sell Decision Logic:
-- **RSI Overbought (> 70)**: Strong sell signal
-- **Trailing Stop-Loss**: 2% trailing stop locks in profits automatically
-- **Trend-Based Adjustments**:
-  - **Uptrend**: Hold longer for bigger profits (1.5x threshold)
-  - **Downtrend**: Take profits quicker (0.7x threshold)
+
+```
+- RSI Overbought (> 70): Strong sell signal
+- Trailing Stop-Loss: 2% trailing stop locks in profits automatically
+- Trend-Based Adjustments:
+  - Uptrend: Hold longer for bigger profits (1.5x threshold)
+  - Downtrend: Take profits quicker (0.7x threshold)
+```
 
 #### 4. Risk Management:
-- **Position Sizing**: Uses 50%-95% of balance based on volatility
-- **Circuit Breaker**: Pauses trading for 1 hour after 5 failed orders
-- **Order Validation**: Ensures minimum order sizes are met
+
+```
+- Position Sizing: Uses 50%-95% of balance based on volatility
+- Circuit Breaker: Pauses trading for 1 hour after 5 failed orders
+- Order Validation: Ensures minimum order sizes are met
+```
 
 ## Example Trading Scenarios
 
 ### Scenario 1: Uptrend Market (RSI: 45, Trend: UP)
-- **Current Price**: $50,000
-- **Dynamic Buy Threshold**: 0.3% (1.5x base due to volatility)
-- **Adjusted for Uptrend**: 0.21% (0.7x modifier)
-- **Buy Signal**: When price drops to $49,895 or below
-- **Position Size**: 80% of balance (moderate volatility)
+```
+- Current Price: $50,000
+- Dynamic Buy Threshold: 0.3% (1.5x base due to volatility)
+- Adjusted for Uptrend: 0.21% (0.7x modifier)
+- Buy Signal: When price drops to $49,895 or below
+- Position Size: 80% of balance (moderate volatility)
+```
 
 ### Scenario 2: Oversold Bounce (RSI: 25)
-- **Immediate Buy Signal**: RSI < 30 triggers strong buy regardless of price
-- **Trailing Stop**: Activates once in profit, follows price up
-- **Sell Logic**: Won't sell until RSI > 30 (avoid selling during bounce)
+```
+- Immediate Buy Signal: RSI < 30 triggers strong buy regardless of price
+- Trailing Stop: Activates once in profit, follows price up
+- Sell Logic: Won't sell until RSI > 30 (avoid selling during bounce)
+```
 
 ### Scenario 3: High Volatility Market (Volatility: 8%)
-- **Dynamic Thresholds**: 3x scaling due to high volatility
-- **Buy Threshold**: 0.6% vs 0.2% base
-- **Sell Threshold**: 1.2% vs 0.4% base
-- **Position Size**: 50% of balance (maximum risk management)
+```
+- Dynamic Thresholds: 3x scaling due to high volatility
+- Buy Threshold: 0.6% vs 0.2% base
+- Sell Threshold: 1.2% vs 0.4% base
+- Position Size: 50% of balance (maximum risk management)
+```
 
 ## Performance Expectations
 
 ### Improvements vs Basic Bot:
-- **Better Entry Timing**: RSI prevents buying at peaks (~15-20% improvement)
-- **Profit Protection**: Trailing stops lock in gains (~10-15% improvement)
-- **Trend Following**: Holds winners longer, cuts losers faster (~20-25% improvement)
-- **Risk Management**: Variable position sizing reduces drawdowns (~10-20% improvement)
+```
+- Better Entry Timing: RSI prevents buying at peaks (~15-20% improvement)
+- Profit Protection: Trailing stops lock in gains (~10-15% improvement)
+- Trend Following: Holds winners longer, cuts losers faster (~20-25% improvement)
+- Risk Management: Variable position sizing reduces drawdowns (~10-20% improvement)
+```
 
 ### Recommended Settings:
-- **Conservative**: Keep default thresholds, monitor for 1-2 weeks
-- **Aggressive**: Lower base thresholds to 0.15%/0.3%, increase trailing stop to 3%
-- **High Frequency**: Check every 30 seconds instead of 60 seconds
+```
+- Conservative: Keep default thresholds, monitor for 1-2 weeks
+- Aggressive: Lower base thresholds to 0.15%/0.3%, increase trailing stop to 3%
+- High Frequency: Check every 30 seconds instead of 60 seconds
+```
 
 ## Deployment
 
 ### Production Installation:
 ```bash
+# Install 
 pip install ohheycrypto
+
+# Create a config file
 ohheycrypto init production_config.json
-# Edit production_config.json with your API keys
+
+# Validate your config file
 ohheycrypto validate production_config.json
+
+# Run the bot with your config
 ohheycrypto run production_config.json
 ```
 
@@ -214,7 +239,8 @@ git clone https://github.com/ohheycrypto/bot
 cd bot
 pip install -e .
 ohheycrypto init dev_config.json
-# Edit dev_config.json with your API keys
+
+# Edit config file
 ohheycrypto run dev_config.json --verbose
 ```
 
@@ -224,9 +250,6 @@ ohheycrypto run dev_config.json --verbose
 ohheycrypto run config.json --dry-run
 ```
 
-### Raspberry Pi Hosting:
-Follow [this guide](docs/RaspberryPiSetup.md) for Raspberry Pi deployment.
-
 ## Contributing
 
 Contributions are welcome! Areas for improvement:
@@ -234,6 +257,8 @@ Contributions are welcome! Areas for improvement:
 - Multi-pair trading support
 - Backtesting framework
 - Web dashboard for monitoring
+- An improved Discord notification when making a profitable trades
+- Saving trade data to a SQLite database locally
 
 Please submit pull requests or open issues for discussion.
 
