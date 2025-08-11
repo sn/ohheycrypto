@@ -8,6 +8,9 @@ on:
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required to create releases
+      actions: read
     
     steps:
     - uses: actions/checkout@v4
@@ -34,6 +37,11 @@ jobs:
     
     - name: Check package
       run: twine check dist/*
+    
+    - name: List built files
+      run: |
+        echo "Built files in dist/:"
+        ls -la dist/
     
     - name: Extract version from tag
       id: get_version
@@ -82,5 +90,4 @@ jobs:
         draft: false
         prerelease: ${{ contains(steps.get_version.outputs.VERSION, 'alpha') || contains(steps.get_version.outputs.VERSION, 'beta') || contains(steps.get_version.outputs.VERSION, 'rc') }}
         files: |
-          dist/ohheycrypto-${{ steps.get_version.outputs.VERSION }}-py3-none-any.whl
-          dist/ohheycrypto-${{ steps.get_version.outputs.VERSION }}.tar.gz
+          dist/*

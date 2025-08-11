@@ -255,7 +255,14 @@ Contributions are welcome! Areas for improvement:
 - Web dashboard for monitoring
 - An improved Discord notification when making a profitable trades
 - Saving trade data to a SQLite database locally
-
+- Volume analysis (OBV, Volume Profile)
+- Fibonacci retracements
+- Support/resistance levels
+- Maximum drawdown protection
+- Dynamic stop-loss adjustment
+- Correlation analysis for multi-pair trading
+- Trade multiple crypto pairs simultaneously
+  
 Please submit pull requests or open issues for discussion.
 
 ## Important Disclaimers
