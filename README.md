@@ -1,5 +1,3 @@
-# Ohheycrypto Bot
-
 This is a **crypto trading bot** that uses sophisticated technical analysis and risk management to automatically place buy and sell orders. It primarily deals with the cryptocurrency `BTC` and the fiat currency `USDT`, but you can set it to any other trading pair.
 
 ![Trading Bot Screenshot](static/screenshot.png)

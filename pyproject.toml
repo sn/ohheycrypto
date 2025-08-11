@@ -37,10 +37,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/ohheycrypto/bot"
-"Bug Tracker" = "https://github.com/ohheycrypto/bot/issues"
-Documentation = "https://github.com/ohheycrypto/bot#readme"
-"Source Code" = "https://github.com/ohheycrypto/bot"
+Homepage = "https://github.com/sn/ohheycrypto"
+"Bug Tracker" = "https://github.com/sn/ohheycrypto/issues"
+Documentation = "https://github.com/sn/ohheycrypto#readme"
+"Source Code" = "https://github.com/sn/ohheycrypto"
 
 [project.scripts]
 ohheycrypto = "ohheycrypto.cli:main"
