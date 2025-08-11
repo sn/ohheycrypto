@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 def mock_binance_client():
     """Mock Binance client for testing."""
     client = Mock()
-    
+
     # Mock account info
     client.get_account.return_value = {
         "balances": [
@@ -19,7 +19,7 @@ def mock_binance_client():
             {"asset": "BTC", "free": "0.5", "locked": "0.0"},
         ]
     }
-    
+
     # Mock ticker info
     client.get_ticker.return_value = {
         "symbol": "BTCUSDT",
@@ -27,17 +27,41 @@ def mock_binance_client():
         "priceChangePercent": "1.5",
         "lastPrice": "50000.0",
         "volume": "1000.0",
-        "count": 10000
+        "count": 10000,
     }
-    
+
     # Mock klines (candlestick) data
     client.get_klines.return_value = [
-        [1640995200000, "48000", "48500", "47800", "48200", "100", 1640998800000, 
-         "4820000", 100, "50", "2410000", "0"],
-        [1640998800000, "48200", "48700", "48000", "48500", "110", 1641002400000,
-         "5335000", 110, "55", "2667500", "0"],
+        [
+            1640995200000,
+            "48000",
+            "48500",
+            "47800",
+            "48200",
+            "100",
+            1640998800000,
+            "4820000",
+            100,
+            "50",
+            "2410000",
+            "0",
+        ],
+        [
+            1640998800000,
+            "48200",
+            "48700",
+            "48000",
+            "48500",
+            "110",
+            1641002400000,
+            "5335000",
+            110,
+            "55",
+            "2667500",
+            "0",
+        ],
     ]
-    
+
     # Mock order creation
     client.create_order.return_value = {
         "symbol": "BTCUSDT",
@@ -46,9 +70,9 @@ def mock_binance_client():
         "origQty": "0.01",
         "type": "MARKET",
         "side": "BUY",
-        "status": "FILLED"
+        "status": "FILLED",
     }
-    
+
     return client
 
 
@@ -64,32 +88,29 @@ def mock_discord_service():
 @pytest.fixture
 def mock_config():
     """Mock configuration for testing."""
-    from ohheycrypto.config.settings import Config, TradingConfig, MarketAnalysisConfig, ExecutionConfig, APIConfig
-    
+    from ohheycrypto.config.settings import (
+        Config,
+        TradingConfig,
+        MarketAnalysisConfig,
+        ExecutionConfig,
+        APIConfig,
+    )
+
     return Config(
         trading=TradingConfig(
-            stop_loss=3.0,
-            sell_threshold=0.4,
-            buy_threshold=0.2,
-            fiat="USDT",
-            crypto="BTC"
+            stop_loss=3.0, sell_threshold=0.4, buy_threshold=0.2, fiat="USDT", crypto="BTC"
         ),
         market_analysis=MarketAnalysisConfig(
-            rsi_period=14,
-            rsi_oversold=30.0,
-            rsi_overbought=70.0,
-            ma_short=10,
-            ma_long=20
+            rsi_period=14, rsi_oversold=30.0, rsi_overbought=70.0, ma_short=10, ma_long=20
         ),
         execution=ExecutionConfig(
-            check_interval=60,
-            circuit_breaker={"max_failures": 5, "cooldown": 3600}
+            check_interval=60, circuit_breaker={"max_failures": 5, "cooldown": 3600}
         ),
         api=APIConfig(
             binance_api_key="test_key",
             binance_api_secret="test_secret",
-            discord_webhook="https://discord.com/api/webhooks/test"
-        )
+            discord_webhook="https://discord.com/api/webhooks/test",
+        ),
     )
 
 
@@ -109,5 +130,5 @@ def sample_market_data():
         "volatility": 0.02,
         "trend": "neutral",
         "ma_short": 48600,
-        "ma_long": 48400
+        "ma_long": 48400,
     }

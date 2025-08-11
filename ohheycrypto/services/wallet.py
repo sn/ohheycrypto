@@ -26,7 +26,7 @@ class Wallet:
         except Exception as e:
             logger.error(f"Failed to sync initial balances: {e}")
             self._balances = {}
-    
+
     @retry_with_backoff(RetryConfig(max_attempts=5))
     def sync(self) -> Dict[str, float]:
         """
@@ -39,18 +39,14 @@ class Wallet:
             if "balances" not in account_info:
                 logger.error("Invalid account info structure")
                 return self._balances  # Return cached balances
-            
+
             _results = account_info["balances"]
-            new_balances = {
-                k["asset"]: float(k["free"]) 
-                for k in _results 
-                if float(k["free"]) > 0
-            }
-            
+            new_balances = {k["asset"]: float(k["free"]) for k in _results if float(k["free"]) > 0}
+
             # Update cache on successful sync
             self._balances = new_balances
             return new_balances
-            
+
         except BinanceAPIException as e:
             logger.error(f"Binance API error during sync: {e.code} - {e.message}")
             raise
@@ -70,7 +66,7 @@ class Wallet:
                 self.sync()
             except Exception:
                 logger.warning(f"Failed to sync balances, using cache for {symbol}")
-        
+
         return self._balances.get(symbol, 0) > 0
 
     def balance(self, symbol: str) -> float:
@@ -85,7 +81,7 @@ class Wallet:
                 self.sync()
             except Exception:
                 logger.warning(f"Failed to sync balances, using cache for {symbol}")
-        
+
         return self._balances.get(symbol, 0)
 
     def balances(self) -> Dict[str, float]:
@@ -94,7 +90,7 @@ class Wallet:
         :return: Dictionary of asset symbols to balance amounts
         """
         return self._balances.copy()  # Return a copy to prevent external modifications
-    
+
     def refresh_balances(self) -> Optional[Dict[str, float]]:
         """
         Force refresh balances from the API.

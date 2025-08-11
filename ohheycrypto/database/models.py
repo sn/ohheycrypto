@@ -20,6 +20,7 @@ class OrderStatus(str, Enum):
 
 class Trade(BaseModel):
     """Model for storing trade history."""
+
     id: Optional[int] = Field(default=None, description="Database ID")
     order_id: int = Field(description="Binance order ID")
     symbol: str = Field(description="Trading pair (e.g., BTCUSDT)")
@@ -31,28 +32,29 @@ class Trade(BaseModel):
     fee_asset: Optional[str] = Field(default=None, description="Fee currency")
     status: OrderStatus = Field(description="Order status")
     timestamp: datetime = Field(default_factory=datetime.utcnow, description="Trade timestamp")
-    
+
     # Market conditions at time of trade
     rsi: Optional[float] = Field(default=None, description="RSI at trade time")
     volatility: Optional[float] = Field(default=None, description="Volatility at trade time")
     trend: Optional[str] = Field(default=None, description="Market trend at trade time")
-    
+
     # Decision factors
     buy_threshold: Optional[float] = Field(default=None, description="Buy threshold used")
     sell_threshold: Optional[float] = Field(default=None, description="Sell threshold used")
     stop_loss: Optional[float] = Field(default=None, description="Stop loss percentage")
-    
+
     # Performance tracking
     profit_loss: Optional[float] = Field(default=None, description="P&L for sell orders")
     profit_loss_percent: Optional[float] = Field(default=None, description="P&L percentage")
     holding_time_hours: Optional[float] = Field(default=None, description="Position holding time")
-    
+
     class Config:
         orm_mode = True
 
 
 class BotState(BaseModel):
     """Model for storing bot state."""
+
     id: int = Field(default=1, description="State ID (always 1 for single bot)")
     last_buy_price: Optional[float] = Field(default=None, description="Last buy price")
     last_buy_time: Optional[datetime] = Field(default=None, description="Last buy timestamp")
@@ -63,16 +65,19 @@ class BotState(BaseModel):
     successful_trades: int = Field(default=0, description="Number of profitable trades")
     total_profit_loss: float = Field(default=0.0, description="Cumulative P&L")
     circuit_breaker_active: bool = Field(default=False, description="Circuit breaker status")
-    circuit_breaker_until: Optional[datetime] = Field(default=None, description="Circuit breaker end time")
+    circuit_breaker_until: Optional[datetime] = Field(
+        default=None, description="Circuit breaker end time"
+    )
     failed_orders_count: int = Field(default=0, description="Consecutive failed orders")
     last_update: datetime = Field(default_factory=datetime.utcnow, description="Last state update")
-    
+
     class Config:
         orm_mode = True
 
 
 class MarketSnapshot(BaseModel):
     """Model for storing market snapshots."""
+
     id: Optional[int] = Field(default=None, description="Database ID")
     symbol: str = Field(description="Trading pair")
     price: float = Field(description="Current price")
@@ -84,13 +89,14 @@ class MarketSnapshot(BaseModel):
     ma_long: float = Field(description="Long MA value")
     trend: str = Field(description="Market trend")
     timestamp: datetime = Field(default_factory=datetime.utcnow, description="Snapshot timestamp")
-    
+
     class Config:
         orm_mode = True
 
 
 class PerformanceMetrics(BaseModel):
     """Aggregated performance metrics."""
+
     total_trades: int = 0
     winning_trades: int = 0
     losing_trades: int = 0

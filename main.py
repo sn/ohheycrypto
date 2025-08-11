@@ -22,27 +22,31 @@ def analyze(m, w):
         if o["status"] == "NEW":
             LoggingService.success(
                 "OPEN: #{} - {} {} @ {:.4f} / ${:.2f}".format(
-                    o["orderId"], o["side"].upper(), o["symbol"], float(o["origQty"]), float(o["price"]),
+                    o["orderId"],
+                    o["side"].upper(),
+                    o["symbol"],
+                    float(o["origQty"]),
+                    float(o["price"]),
                 )
             )
 
     # Get enhanced market analysis
     klines = m.klines(30)
     current_price = float(m.price().get("lastPrice", 0))
-    
+
     if klines:
         rsi = m.calculate_rsi(klines)
         volatility = m.calculate_volatility(klines)
         trend = m.get_trend_direction()
         dynamic_buy, dynamic_sell = m.get_dynamic_thresholds()
-        
+
         LoggingService.note("=== Enhanced Market Analysis ===")
         LoggingService.note(f"RSI: {rsi:.1f}" if rsi else "RSI: N/A")
         LoggingService.note(f"Trend: {trend.upper()}")
         LoggingService.note(f"Volatility: {volatility:.1%}")
         LoggingService.note(f"Dynamic Buy Threshold: {dynamic_buy:.1%}")
         LoggingService.note(f"Dynamic Sell Threshold: {dynamic_sell:.1%}")
-    
+
     _sl = float(os.environ.get("BOT_SL", 0.03))
     LoggingService.note("Stop Loss: {:.1%}".format(_sl))
     LoggingService.note(f"Trailing Stop: {m.trailing_stop_percentage:.1%}")
@@ -110,11 +114,15 @@ if __name__ == "__main__":
                     LoggingService.warn(f"Sell validation failed: {ve}")
 
             market.check_stop_loss()
-            
+
             # Log circuit breaker status if active
             if market._is_circuit_breaker_active():
-                remaining_time = market.circuit_breaker_timeout - (time.time() - market.circuit_breaker_triggered_at)
-                LoggingService.warn(f"Circuit breaker active: {market.failed_orders_count} failures, {remaining_time/60:.1f}min remaining")
+                remaining_time = market.circuit_breaker_timeout - (
+                    time.time() - market.circuit_breaker_triggered_at
+                )
+                LoggingService.warn(
+                    f"Circuit breaker active: {market.failed_orders_count} failures, {remaining_time/60:.1f}min remaining"
+                )
 
             time.sleep(60)
 

@@ -18,14 +18,18 @@ class DiscordService:
         self.c = ""
         self.webhook_url = os.environ.get("DISCORD_WEBHOOK")
         self._validate_webhook_url()
-    
+
     def _validate_webhook_url(self):
         """Validate Discord webhook URL format."""
-        if self.webhook_url and not self.webhook_url.startswith("https://discord.com/api/webhooks/"):
+        if self.webhook_url and not self.webhook_url.startswith(
+            "https://discord.com/api/webhooks/"
+        ):
             logger.warning("Invalid Discord webhook URL format")
-    
+
     @retry_with_backoff(RetryConfig(max_attempts=3, initial_delay=2.0))
-    def post(self, channel_url: Optional[str], payload: Dict[str, Any]) -> Optional[requests.Response]:
+    def post(
+        self, channel_url: Optional[str], payload: Dict[str, Any]
+    ) -> Optional[requests.Response]:
         """
         Posts a message to a Discord channel webhook
 
@@ -77,7 +81,7 @@ class DiscordService:
                 if resp.status_code >= 500:
                     raise RequestException(f"Discord server error: {resp.status_code}")
                 return None
-                
+
         except (ConnectionError, Timeout) as e:
             logger.error(f"Network error posting to Discord: {e}")
             raise
@@ -92,7 +96,7 @@ class DiscordService:
         """Send sell order notification to Discord."""
         if not self.webhook_url:
             return
-        
+
         try:
             self.post(
                 channel_url=self.webhook_url,
@@ -120,7 +124,7 @@ class DiscordService:
         """Send buy order notification to Discord."""
         if not self.webhook_url:
             return
-        
+
         try:
             self.post(
                 channel_url=self.webhook_url,
@@ -148,7 +152,7 @@ class DiscordService:
         """Send bot online notification to Discord."""
         if not self.webhook_url:
             return
-        
+
         try:
             self.post(
                 channel_url=self.webhook_url,
@@ -172,12 +176,12 @@ class DiscordService:
         except Exception as e:
             logger.error(f"Failed to send bot online notification to Discord: {e}")
 
-    def setMarketValues(self, stop_loss: float, sell_threshold: float, 
-                        buy_threshold: float, fiat: str, crypto: str) -> None:
+    def setMarketValues(
+        self, stop_loss: float, sell_threshold: float, buy_threshold: float, fiat: str, crypto: str
+    ) -> None:
         """Set market values for bot online notification."""
         self.sl = stop_loss
         self.st = sell_threshold
         self.bt = buy_threshold
         self.f = fiat
         self.c = crypto
-    
