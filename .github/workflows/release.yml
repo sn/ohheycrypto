@@ -1,0 +1,96 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggers on version tags like v0.2.0, v1.0.0
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch full history for changelog
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+        pip install -e ".[dev]"
+    
+    - name: Run tests
+      run: |
+        pytest --cov=ohheycrypto
+    
+    - name: Build package
+      run: python -m build
+    
+    - name: Check package
+      run: twine check dist/*
+    
+    - name: Extract version from tag
+      id: get_version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+    
+    - name: Generate changelog
+      id: changelog
+      run: |
+        # Simple changelog generation - you can improve this
+        echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+        echo "## What's Changed" >> $GITHUB_OUTPUT
+        git log --pretty=format:"- %s" $(git describe --tags --abbrev=0 HEAD^)..HEAD >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/$(git describe --tags --abbrev=0 HEAD^)...v${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+    
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release v${{ steps.get_version.outputs.VERSION }}
+        body: |
+          # OhHeyCrypto v${{ steps.get_version.outputs.VERSION }}
+          
+          ${{ steps.changelog.outputs.CHANGELOG }}
+          
+          ## Installation
+          
+          ```bash
+          pip install ohheycrypto==${{ steps.get_version.outputs.VERSION }}
+          ```
+          
+          ## Quick Start
+          
+          ```bash
+          ohheycrypto init config.json
+          # Edit config.json with your API keys
+          ohheycrypto validate config.json
+          ohheycrypto run config.json
+          ```
+          
+          ## Docker
+          
+          ```bash
+          docker run -v $(pwd)/config.json:/app/config.json ohheycrypto:v${{ steps.get_version.outputs.VERSION }}
+          ```
+        draft: false
+        prerelease: ${{ contains(steps.get_version.outputs.VERSION, 'alpha') || contains(steps.get_version.outputs.VERSION, 'beta') || contains(steps.get_version.outputs.VERSION, 'rc') }}
+    
+    - name: Upload Release Assets
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: dist/ohheycrypto-${{ steps.get_version.outputs.VERSION }}-py3-none-any.whl
+        asset_name: ohheycrypto-${{ steps.get_version.outputs.VERSION }}-py3-none-any.whl
+        asset_content_type: application/zip

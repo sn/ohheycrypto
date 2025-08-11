@@ -2,6 +2,12 @@ This is a **crypto trading bot** that uses sophisticated technical analysis and 
 
 ![Trading Bot Screenshot](static/screenshot.png)
 
+### Install:
+
+```shell
+pip install ohheycrypto
+```
+
 ## Features
 
 ### Core Trading Features
@@ -24,15 +30,7 @@ This is a **crypto trading bot** that uses sophisticated technical analysis and 
 - **Technical Indicators**: RSI-based entry/exit signals for better timing
 - **Comprehensive Logging**: Detailed market conditions and trading decisions
 
-## Installation
-
-### Install from PyPI (recommended):
-
-```shell
-pip install ohheycrypto
-```
-
-### Quick Start:
+## Quick Start:
 
 ```shell
 # Create a configuration file
@@ -233,7 +231,7 @@ ohheycrypto run production_config.json
 
 ### Development/Source Installation:
 ```bash
-git clone https://github.com/ohheycrypto/bot
+git clone https://github.com/sn/ohheycrypto
 cd bot
 pip install -e .
 ohheycrypto init dev_config.json

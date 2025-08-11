@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+    
+    - name: Lint with flake8
+      run: |
+        # Stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Exit-zero treats all errors as warnings
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
+    
+    - name: Format check with black
+      run: |
+        black --check --diff .
+    
+    - name: Sort imports check with isort
+      run: |
+        isort --check-only --diff .
+    
+    - name: Type check with mypy
+      run: |
+        mypy ohheycrypto --ignore-missing-imports
+      continue-on-error: true  # Don't fail CI on mypy errors yet
+    
+    - name: Security check with bandit
+      run: |
+        bandit -r ohheycrypto -f json -o bandit-report.json || true
+        bandit -r ohheycrypto
+      continue-on-error: true
+    
+    - name: Test CLI functionality
+      run: |
+        # Test that the CLI can be imported and basic commands work
+        ohheycrypto --version
+        ohheycrypto init test_config.json
+        ohheycrypto validate test_config.json || true  # Expected to fail without API keys
+    
+    - name: Run tests
+      run: |
+        pytest --cov=ohheycrypto --cov-report=xml --cov-report=term-missing -v
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+    
+    - name: Build package
+      run: python -m build
+    
+    - name: Check package
+      run: twine check dist/*
+    
+    - name: Test installation
+      run: |
+        pip install dist/*.whl
+        ohheycrypto --version

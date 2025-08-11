@@ -24,11 +24,11 @@ setup(
     description="A sophisticated cryptocurrency trading bot with advanced technical analysis and risk management",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/ohheycrypto/bot",
+    url="https://github.com/sn/ohheycrypto",
     project_urls={
-        "Bug Tracker": "https://github.com/ohheycrypto/bot/issues",
-        "Documentation": "https://github.com/ohheycrypto/bot#readme",
-        "Source Code": "https://github.com/ohheycrypto/bot",
+        "Bug Tracker": "https://github.com/sn/ohheycrypto/issues",
+        "Documentation": "https://github.com/sn/ohheycrypto#readme",
+        "Source Code": "https://github.com/sn/ohheycrypto",
     },
     packages=find_packages(exclude=["tests", "tests.*", "docs", "docs.*"]),
     classifiers=[
