@@ -1,0 +1,8 @@
+include README.md
+include LICENSE
+include example_config.json
+include requirements.txt
+recursive-include ohheycrypto *.py
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+exclude tests/*

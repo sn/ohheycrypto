@@ -1,0 +1,32 @@
+{
+  "trading": {
+    "stop_loss": 3.0,
+    "sell_threshold": 0.4,
+    "buy_threshold": 0.2,
+    "fiat_currency": "USDT",
+    "crypto_currency": "BTC",
+    "min_position_size": 0.5,
+    "max_position_size": 0.95,
+    "trailing_stop_percentage": 2.0
+  },
+  "market_analysis": {
+    "rsi_period": 14,
+    "rsi_oversold": 30.0,
+    "rsi_overbought": 70.0,
+    "ma_short_period": 10,
+    "ma_long_period": 20,
+    "volatility_lookback": 20
+  },
+  "execution": {
+    "market_check_interval": 60,
+    "circuit_breaker_threshold": 5,
+    "circuit_breaker_cooldown": 3600,
+    "order_timeout": 30,
+    "min_notional_value": 10.0
+  },
+  "api": {
+    "binance_api_key": null,
+    "binance_api_secret": null,
+    "discord_webhook": null
+  }
+}
