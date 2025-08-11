@@ -2,4 +2,4 @@
 
 __version__ = "0.2.0"
 __author__ = "Sean Nieuwoudt"
-__email__ = "sean@ohheycrypto.com"
+__email__ = "sean@underwulf.com"

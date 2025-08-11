@@ -21,7 +21,7 @@ setup(
     name="ohheycrypto",
     version=version["__version__"],
     author="Sean Nieuwoudt",
-    author_email="sean@ohheycrypto.com",
+    author_email="sean@underwulf.com",
     description="A sophisticated cryptocurrency trading bot with advanced technical analysis and risk management",
     long_description=long_description,
     long_description_content_type="text/markdown",
