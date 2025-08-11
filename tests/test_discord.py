@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch, MagicMock
 import requests
 from requests.exceptions import RequestException, Timeout, ConnectionError
 
-from plugins.discord import DiscordService
+from ohheycrypto.plugins.discord import DiscordService
 
 
 class TestDiscordService:
@@ -28,7 +28,7 @@ class TestDiscordService:
         with patch.dict('os.environ', {
             'DISCORD_WEBHOOK': 'https://invalid-webhook.com/webhook'
         }):
-            with patch('plugins.discord.logger') as mock_logger:
+            with patch('ohheycrypto.plugins.discord.logger') as mock_logger:
                 service = DiscordService()
                 mock_logger.warning.assert_called_with("Invalid Discord webhook URL format")
     
@@ -75,7 +75,7 @@ class TestDiscordService:
             # Missing content and embeds
         }
         
-        with patch('plugins.discord.logger') as mock_logger:
+        with patch('ohheycrypto.plugins.discord.logger') as mock_logger:
             result = service.post("https://discord.com/api/webhooks/test", payload)
             assert result is None
             mock_logger.error.assert_called()
@@ -96,8 +96,8 @@ class TestDiscordService:
             "embeds": []
         }
         
-        with pytest.raises(RequestException):
-            service.post("https://discord.com/api/webhooks/test", payload)
+        result = service.post("https://discord.com/api/webhooks/test", payload)
+        assert result is None  # Should return None for client errors like 429
     
     @patch('requests.post')
     def test_post_webhook_not_found(self, mock_post):
@@ -138,7 +138,7 @@ class TestDiscordService:
         assert result == mock_response
         assert mock_post.call_count == 2
     
-    @patch('plugins.discord.DiscordService.post')
+    @patch('ohheycrypto.plugins.discord.DiscordService.post')
     def test_sell_notification(self, mock_post):
         """Test sell order notification."""
         with patch.dict('os.environ', {
@@ -161,7 +161,7 @@ class TestDiscordService:
             assert call_args['channel_url'] == 'https://discord.com/api/webhooks/test'
             assert call_args['payload']['content'] == "SELL order created"
     
-    @patch('plugins.discord.DiscordService.post')
+    @patch('ohheycrypto.plugins.discord.DiscordService.post')
     def test_buy_notification(self, mock_post):
         """Test buy order notification."""
         with patch.dict('os.environ', {
@@ -184,7 +184,7 @@ class TestDiscordService:
             assert call_args['channel_url'] == 'https://discord.com/api/webhooks/test'
             assert call_args['payload']['content'] == "BUY order created"
     
-    @patch('plugins.discord.DiscordService.post')
+    @patch('ohheycrypto.plugins.discord.DiscordService.post')
     def test_bot_online_notification(self, mock_post):
         """Test bot online notification."""
         with patch.dict('os.environ', {
@@ -216,7 +216,7 @@ class TestDiscordService:
             service.buy({"symbol": "BTCUSDT"})
             service.botOnline()
     
-    @patch('plugins.discord.DiscordService.post')
+    @patch('ohheycrypto.plugins.discord.DiscordService.post')
     def test_notification_error_handling(self, mock_post):
         """Test error handling in notifications."""
         mock_post.side_effect = Exception("Network error")

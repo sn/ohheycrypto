@@ -3,7 +3,7 @@ import json
 import logging
 from typing import Dict, Any, Optional
 from pathlib import Path
-from pydantic import BaseModel, Field, validator, ValidationError
+from pydantic import BaseModel, Field, field_validator, ValidationError
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +45,8 @@ class TradingConfig(BaseModel):
     def trailing_stop_percentage(self) -> float:
         return self.trailing_stop
     
-    @validator('position_sizing')
+    @field_validator('position_sizing')
+    @classmethod
     def validate_position_sizing(cls, v):
         if v.max < v.min:
             raise ValueError('max position size must be >= min position size')
@@ -70,9 +71,10 @@ class MarketAnalysisConfig(BaseModel):
     def ma_long_period(self) -> int:
         return self.ma_long
     
-    @validator('ma_long')
-    def validate_ma_periods(cls, v, values):
-        if 'ma_short' in values and v <= values['ma_short']:
+    @field_validator('ma_long')
+    @classmethod
+    def validate_ma_periods(cls, v, info):
+        if hasattr(info, 'data') and 'ma_short' in info.data and v <= info.data['ma_short']:
             raise ValueError('ma_long must be > ma_short')
         return v
 
@@ -125,19 +127,22 @@ class APIConfig(BaseModel):
     binance_api_secret: Optional[str] = Field(default=None, description="Binance API secret")
     discord_webhook: Optional[str] = Field(default=None, description="Discord webhook URL")
     
-    @validator('binance_api_key')
+    @field_validator('binance_api_key')
+    @classmethod
     def validate_api_key(cls, v):
         if v and len(v) < 10:
             raise ValueError("binance_api_key appears to be invalid")
         return v
     
-    @validator('binance_api_secret')
+    @field_validator('binance_api_secret')
+    @classmethod
     def validate_api_secret(cls, v):
         if v and len(v) < 10:
             raise ValueError("binance_api_secret appears to be invalid")
         return v
     
-    @validator('discord_webhook')
+    @field_validator('discord_webhook')
+    @classmethod
     def validate_discord_webhook(cls, v):
         if v and not v.startswith("https://discord.com/api/webhooks/"):
             raise ValueError("Invalid Discord webhook URL format")
@@ -219,7 +224,7 @@ class Config(BaseModel):
         try:
             config_path.parent.mkdir(exist_ok=True)
             with open(config_path, 'w') as f:
-                json.dump(self.dict(), f, indent=2)
+                json.dump(self.model_dump(), f, indent=2)
             logger.info(f"Configuration saved to {config_path}")
         except Exception as e:
             logger.error(f"Error saving config: {e}")

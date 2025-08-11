@@ -64,24 +64,26 @@ def mock_discord_service():
 @pytest.fixture
 def mock_config():
     """Mock configuration for testing."""
-    from config.settings import Config, TradingConfig, MarketAnalysisConfig, ExecutionConfig, APIConfig
+    from ohheycrypto.config.settings import Config, TradingConfig, MarketAnalysisConfig, ExecutionConfig, APIConfig
     
     return Config(
         trading=TradingConfig(
             stop_loss=3.0,
             sell_threshold=0.4,
             buy_threshold=0.2,
-            fiat_currency="USDT",
-            crypto_currency="BTC"
+            fiat="USDT",
+            crypto="BTC"
         ),
         market_analysis=MarketAnalysisConfig(
             rsi_period=14,
             rsi_oversold=30.0,
-            rsi_overbought=70.0
+            rsi_overbought=70.0,
+            ma_short=10,
+            ma_long=20
         ),
         execution=ExecutionConfig(
-            market_check_interval=60,
-            circuit_breaker_threshold=5
+            check_interval=60,
+            circuit_breaker={"max_failures": 5, "cooldown": 3600}
         ),
         api=APIConfig(
             binance_api_key="test_key",
